@@ -8,10 +8,15 @@ import "./index.scss";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
-  const hello = trpc.useQuery(["hello"]);
+  const hello = trpc.useQuery(["hello", "Jasper"]);
+  const response = trpc.useQuery(["getMessages"]);
+  const { data: messages } = response;
   return (
     <div className="mt-10 text-3xl mx-auto max-w-6xl">
-      <div>{JSON.stringify(hello.data)}</div>
+      <h1>{hello.data}</h1>
+      {messages?.map((msg) => (<p>
+        { msg.message }
+      </p>))}
     </div>
   );
 };

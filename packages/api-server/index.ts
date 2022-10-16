@@ -1,7 +1,7 @@
 import express from "express";
 import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { number, string } from "zod";
+import { number, object, string } from "zod";
 import cors from "cors";
 import { Message } from "./models/Message";
 
@@ -17,7 +17,17 @@ const appRouter = trpc.router()
     resolve: ({ input }) => {
       return messages.slice(-input);
     },
-  });
+  })
+  .mutation("addMessage", {
+    input: object({
+      user: string(),
+      message: string(),
+    }),
+    resolve({ input }) {
+      messages.push(input);
+      return input;
+    }
+  })
 
 export type AppRouter = typeof appRouter;
 
